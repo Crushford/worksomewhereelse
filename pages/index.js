@@ -23,7 +23,7 @@ export default function Home({ properties }) {
       <h1>Why not Work Somewhere Else?</h1>
       <p>Here is a list of places we have worked from and fully recommend:</p>
       <ul>
-        {properties.map(({ title, urlSlug, id }) => (
+        {properties.map(({ title, urlSlug, sys: { id } }) => (
           <Link
             href={{
               pathname: '/properties/[slug]',
