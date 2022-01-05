@@ -1,14 +1,18 @@
 import { GraphQLClient, gql } from 'graphql-request'
 
-export const getProperties = async () => {
-  const endpoint = `https://graphql.contentful.com/content/v1/spaces/${process.env.SPACE_ID}`
+const graphQlRequest = (query, variables = {}) => {
+  const endpoint = `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`
 
   const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
-      authorization: `Bearer ${process.env.CDA_TOKEN}`
+      authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`
     }
   })
 
+  return graphQLClient.request(query, variables)
+}
+
+export const getProperties = async () => {
   const query = gql`
     {
       propertiesCollection {
@@ -25,19 +29,11 @@ export const getProperties = async () => {
 
   const {
     propertiesCollection: { items: properties }
-  } = await graphQLClient.request(query)
+  } = await graphQlRequest(query)
   return properties
 }
 
 export const getProperty = async urlSlug => {
-  const endpoint = `https://graphql.contentful.com/content/v1/spaces/${process.env.SPACE_ID}`
-
-  const graphQLClient = new GraphQLClient(endpoint, {
-    headers: {
-      authorization: `Bearer ${process.env.CDA_TOKEN}`
-    }
-  })
-
   const query = gql`
     query getProperty($urlSlug: String!) {
       propertiesCollection(where: { urlSlug: $urlSlug }) {
@@ -65,6 +61,6 @@ export const getProperty = async urlSlug => {
     propertiesCollection: {
       items: [property]
     }
-  } = await graphQLClient.request(query, { urlSlug })
+  } = await graphQlRequest(query, { urlSlug })
   return property
 }
