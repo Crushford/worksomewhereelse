@@ -1,0 +1,19 @@
+.home {
+  color: orange;
+}
+
+.nav {
+  margin: 20px;
+}
+.title {
+  color: black;
+}
+.links {
+  margin: 30px;
+}
+.button {
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+  background-color: orange;
+}
