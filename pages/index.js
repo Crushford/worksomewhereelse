@@ -2,6 +2,8 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { getProperties } from '../utils/contentful-helper'
+import { useRouter } from 'next/router'
+import { COUNTRY_STRINGS } from '../constants'
 
 export const getStaticProps = async () => {
   const properties = await getProperties()
@@ -12,6 +14,10 @@ export const getStaticProps = async () => {
 }
 
 export default function Home({ properties }) {
+  const router = useRouter()
+  const country = router.asPath.match(/(?<=country=).*/g)
+  debugger
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +26,10 @@ export default function Home({ properties }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Why not Work Somewhere Else?</h1>
+      <h1>
+        {country && <span>Had enough of {COUNTRY_STRINGS[country]}?</span>} Why
+        not Work Somewhere Else?
+      </h1>
       <p>Here is a list of places we have worked from and fully recommend:</p>
       <ul>
         {properties.map(({ title, urlSlug, sys: { id } }) => (
