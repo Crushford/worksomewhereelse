@@ -7,7 +7,8 @@ export const getStaticProps = async () => {
   const properties = await getProperties()
 
   return {
-    props: { properties }
+    props: { properties },
+    revalidate: 60
   }
 }
 
