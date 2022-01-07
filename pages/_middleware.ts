@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(req: NextRequest, res: NextResponse) {
-  const { pathname } = req.nextUrl
+  const { pathname, search } = req.nextUrl
 
-  if (pathname === '') {
+  if (pathname === '/' && !search) {
     const country = req.geo.country || 'de'
-    const res = NextResponse.rewrite(`/${country}`)
-
-    return res
+    return NextResponse.redirect(`/?country=${country}`)
   }
   return NextResponse.next()
 }

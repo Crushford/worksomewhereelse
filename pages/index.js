@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 import { getProperties } from '../utils/contentful-helper'
 import { useRouter } from 'next/router'
-import { SUPPORTED_COUNTRIES, COUNTRY_STRINGS } from '../constants'
+import { COUNTRY_STRINGS } from '../constants'
 
 export const getStaticProps = async () => {
   const properties = await getProperties()
@@ -13,16 +13,10 @@ export const getStaticProps = async () => {
   }
 }
 
-export async function getStaticPaths() {
-  return {
-    paths: SUPPORTED_COUNTRIES.map(country => ({ params: { country } })),
-    fallback: false
-  }
-}
-
 export default function Home({ properties }) {
   const router = useRouter()
-  const { country } = router.query
+  const country = router.asPath.match(/(?<=country=).*/g)
+  debugger
 
   return (
     <div className={styles.container}>
